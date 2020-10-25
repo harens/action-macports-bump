@@ -1,0 +1,30 @@
+name: MacPorts Bump
+description: Bump MacPorts Portfile
+author: harens
+branding:
+  icon: 'command'  
+  color: 'white'
+inputs:
+  token:
+    description: GitHub token
+    required: true
+  tag:
+    description: |
+      Git tag
+      Example: v2.3.4
+    required: false
+    default: ${{github.ref}}
+  name:
+    description: |
+      Name of the port
+      Example: py-questionary
+    required: false
+runs:
+  using: composite
+  steps:
+    - run: $/test/main.sh
+      shell: bash
+      env:
+        TAG: ${{inputs.tag}}
+        TOKEN: ${{inputs.token}}
+        NAME: ${{inputs.NAME}}

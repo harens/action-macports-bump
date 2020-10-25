@@ -1,0 +1,22 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - '*'
+    paths-ignore:
+      - README.md
+
+jobs:
+  test:
+    name: Test MacPorts Bump Action
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Test
+        uses: ./
+        with:
+          token: ${{secrets.TOKEN}}
+          name: example
+          tag: v1.2.3
