@@ -22,7 +22,9 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: $/test/main.sh
+    - run: . scripts/bootstrap.sh
+      shell: bash
+    - run: . scripts/main.sh
       shell: bash
       env:
         TAG: ${{inputs.tag}}
