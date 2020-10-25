@@ -31,10 +31,10 @@ runs:
     - name: Clone MacPorts
       run: . scripts/bootstrap.sh
       shell: bash
-    - name: Bump Version
-      run: . scripts/main.sh
-      shell: bash
       env:
         TAG: ${{inputs.tag}}
         TOKEN: ${{inputs.token}}
-        NAME: ${{inputs.NAME}}
+        NAME: ${{inputs.name}}
+    - name: Bump Version
+      run: . scripts/main.sh
+      shell: bash
