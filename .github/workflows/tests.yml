@@ -18,6 +18,5 @@ jobs:
         uses: ./
         with:
           token: ${{secrets.TOKEN}}
-          category: python
-          name: example
-          tag: v1.2.3
+          name: py-questionary
+          tag: v1.7.1

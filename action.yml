@@ -19,22 +19,13 @@ inputs:
       Name of the port
       Example: py-questionary
     required: true
-  category:
-    description: |
-      The port's default category
-      i.e. Which folder it is in in macports-ports
-      Example: sysutils
-    required: true
 runs:
   using: composite
   steps:
-    - name: Clone MacPorts
-      run: . scripts/bootstrap.sh
-      shell: bash
-      env:
-        TAG: ${{inputs.tag}}
-        TOKEN: ${{inputs.token}}
-        NAME: ${{inputs.name}}
     - name: Bump Version
       run: . scripts/main.sh
       shell: bash
+      env:
+        TAG: ${{inputs.tag}}
+        TOKEN: ${{inputs.TOKEN}}
+        NAME: ${{inputs.name}}
