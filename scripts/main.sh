@@ -2,21 +2,16 @@
 
 echo -e "\033[1;94m🔧 Setting up MacPorts"
 curl -LO https://raw.githubusercontent.com/GiovanniBussi/macports-ci/master/macports-ci
+source ./macports-ci install
 
-if [ "$PACKAGE" == true ]; then
-    # Prefix specific to the software
-    # This means that the installer package doesn't conflict
-    # with MacPorts on systems that do have MacPorts
-    # This does make the installation slower
-    source ./macports-ci install --prefix=/opt/$NAME
-else
-    source ./macports-ci install
-fi
+echo -e "\033[1;94m🔍 Determining current outdated version"
+CURRENT=$(port info --version $NAME | sed 's/[A-Za-z: ]*//g')  # Remove letters, colon and space
+echo "Current version number is $CURRENT!"
 
-echo -e "\033[1;94m🏷️ Determining version from tag"
+echo -e "\033[1;94m🏷️ Determining new version from tag"
 # We want to keep the dots, but remove all letters
 TAG=$(echo $TAG | sed 's/[A-Za-z]*//g')
-echo "Version number is $TAG!"
+echo "New version number is $TAG!"
 
 echo -e "\033[1;94m📒 Determining Category"
 CATEGORY=$(port info --category $NAME)
@@ -41,19 +36,6 @@ echo -e "\033[1;94m😀 Authenticating GitHub CLI"
 echo $TOKEN >> token.txt
 gh auth login --with-token < token.txt
 gh auth status
-
-if [ "$PACKAGE" == true ]; then
-    # Generate metapackage with all its library
-    # and runtime dependencies in a single package
-    echo -e "\033[1;94m🔨 Creating binary package"
-    yes | sudo port mdmg $NAME
-    PATH=$(port work $NAME)
-    FILE=$NAME-$TAG.dmg
-
-    mkdir packages
-    mv $PATH/$FILE packages
-fi
-
 
 # (\d+\.)(\d+\.)(.*)
 

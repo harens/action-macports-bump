@@ -19,12 +19,6 @@ inputs:
       Name of the port
       Example: py-questionary
     required: true
-  package:
-    description: |
-      Generate standalone binary installers
-      that do not require MacPorts on the target system
-    required: false
-    default: false
 runs:
   using: composite
   steps:
@@ -34,4 +28,3 @@ runs:
         TAG: ${{inputs.tag}}
         TOKEN: ${{inputs.TOKEN}}
         NAME: ${{inputs.name}}
-        PACKAGE: ${{inputs.package}}
