@@ -10,7 +10,7 @@ inputs:
     required: true
   tag:
     description: |
-      Git tag
+      Git tag or version number
       Example: v2.3.4
     required: false
     default: ${{github.ref}}
@@ -19,13 +19,19 @@ inputs:
       Name of the port
       Example: py-questionary
     required: true
+  package:
+    description: |
+      Generate standalone binary installers
+      that do not require MacPorts on the target system
+    required: false
+    default: false
 runs:
   using: composite
   steps:
-    - name: Bump Version
-      run: . scripts/main.sh
+    - run: . scripts/main.sh
       shell: bash
       env:
         TAG: ${{inputs.tag}}
         TOKEN: ${{inputs.TOKEN}}
         NAME: ${{inputs.name}}
+        PACKAGE: ${{inputs.package}}

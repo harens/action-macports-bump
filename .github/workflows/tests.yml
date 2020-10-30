@@ -14,9 +14,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Test
+      - name: Test GitHub Action
         uses: ./
         with:
           token: ${{secrets.TOKEN}}
           name: py-questionary
           tag: v1.7.1
+          package: true
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Binary File
+          path: ${{ github.workspace }}/packages/*
