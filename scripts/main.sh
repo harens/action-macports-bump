@@ -17,7 +17,7 @@ echo -e "\033[1;94m📒 Determining Category"
 CATEGORY=$(port info --category $NAME)
 CATEGORY_LIST=($CATEGORY)
 CATEGORY=${CATEGORY_LIST[1]}  # Only take the first category
-CATEGORY=$(echo "$CATEGORY" | tr "," " ")  # Remove any commas
+CATEGORY=$(echo "$CATEGORY" | tr "," "\n")  # Replace commas with line breaks
 echo "Category is $CATEGORY!"
 
 echo -e "\033[1;94m⬇️ Cloning MacPorts Repo"
@@ -28,6 +28,11 @@ mkdir -p ports/$CATEGORY/$NAME
 # Copy Portfile to the local repo
 cp macports-ports/$CATEGORY/$NAME/Portfile ports/$CATEGORY/$NAME/Portfile
 source macports-ci localports ports
+
+echo -e "\033[1;94m⏫ Bumping Version"
+# Replaces first instance of old version with new version
+sed -i '' '1,/$CURRENT/ s/$CURRENT/$TAG/' ports/$CATEGORY/$NAME/Portfile
+sudo port bump $NAME
 
 echo -e "\033[1;94m⬇️ Installing GitHub CLI"
 sudo port install gh
@@ -41,3 +46,5 @@ gh auth status
 
 # echo "Checkout branch"
 # git checkout -b $NAME
+
+# sed -i '' '1,/2.3.0/ s/2.3.0/2.18.1/' Portfile
