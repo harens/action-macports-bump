@@ -65,7 +65,12 @@ As well as this, feel free to open an issue with any new suggestions or bug repo
 
 ## Examples
 
-- This project's [tests.yml](https://github.com/harens/action-macports-bump/blob/master/.github/workflows/tests.yml)
+* This project's [tests.yml](https://github.com/harens/action-macports-bump/blob/master/.github/workflows/tests.yml)
+
+## TODO
+
+* Add __support for generating binary packages__ that do not require MacPorts on the target system via `sudo port mpkg/mdmg`. Although this is feasible and [well documented](https://guide.macports.org/chunked/using.binaries.html), the issue with this is that it might be hard to generalise this process for many ports and it would make the action much slower.
+* Include an __updating dependencies__ feature that could be useful for Go and Cargo packages in particular. This could make use of tools such as [go2port](https://github.com/amake/go2port).
 
 ## Acknowledgements
 
