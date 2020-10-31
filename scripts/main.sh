@@ -31,7 +31,7 @@ source macports-ci localports ports
 
 echo -e "\033[1;94m⏫ Bumping Version"
 # Replaces first instance of old version with new version
-sed -i '' '1,/$CURRENT/ s/$CURRENT/$TAG/' ports/$CATEGORY/$NAME/Portfile
+sed -i '' "1,/$CURRENT/ s/$CURRENT/$TAG/" ports/$CATEGORY/$NAME/Portfile
 sudo port bump $NAME
 
 echo -e "\033[1;94m⬇️ Installing GitHub CLI"
@@ -41,6 +41,12 @@ echo -e "\033[1;94m😀 Authenticating GitHub CLI"
 echo $TOKEN >> token.txt
 gh auth login --with-token < token.txt
 gh auth status
+ 
+cp ports/$CATEGORY/$NAME/Portfile macports-ports/$CATEGORY/$NAME/Portfile
+cat ports/$CATEGORY/$NAME/Portfile
+cat macports-ports/$CATEGORY/$NAME/Portfile
+
+cd macports-ports && git remote update && git status
 
 # (\d+\.)(\d+\.)(.*)
 
