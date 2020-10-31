@@ -18,5 +18,6 @@ jobs:
         uses: ./
         with:
           token: ${{secrets.TOKEN}}
-          name: py-cleo
-          tag: v0.8.1
+          name: glide
+          tag: v0.13.3
+          repo: harens/macports-ports

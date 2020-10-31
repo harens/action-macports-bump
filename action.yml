@@ -8,17 +8,22 @@ inputs:
   token:
     description: GitHub token
     required: true
+  name:
+    description: |
+      Name of the port
+      Example: py-questionary
+    required: true
   tag:
     description: |
       Git tag or version number
       Example: v2.3.4
     required: false
     default: ${{github.ref}}
-  name:
+  repo:
     description: |
-      Name of the port
-      Example: py-questionary
-    required: true
+      Portfile repo to modify
+    required: false
+    default: macports/macports-ports
 runs:
   using: composite
   steps:
@@ -28,3 +33,4 @@ runs:
         TAG: ${{inputs.tag}}
         TOKEN: ${{inputs.TOKEN}}
         NAME: ${{inputs.name}}
+        REPO: ${{inputs.repo}}

@@ -21,12 +21,14 @@ CATEGORY=$(echo "$CATEGORY" | tr "," "\n")  # Replace commas with line breaks
 echo "Category is $CATEGORY!"
 
 echo -e "\033[1;94m⬇️ Cloning MacPorts Repo"
-git clone https://github.com/macports/macports-ports
+git clone https://github.com/$REPO
+# Name of the cloned folder
+CLONE=$(echo $REPO | awk -F'/' '{print $2}')
 
 echo -e "\033[1;94m📁 Creating local Portfile Repo"
 mkdir -p ports/$CATEGORY/$NAME
 # Copy Portfile to the local repo
-cp macports-ports/$CATEGORY/$NAME/Portfile ports/$CATEGORY/$NAME/Portfile
+cp $CLONE/$CATEGORY/$NAME/Portfile ports/$CATEGORY/$NAME/Portfile
 source macports-ci localports ports
 
 echo -e "\033[1;94m⏫ Bumping Version"
@@ -41,12 +43,11 @@ echo -e "\033[1;94m😀 Authenticating GitHub CLI"
 echo $TOKEN >> token.txt
 gh auth login --with-token < token.txt
 gh auth status
- 
-cp ports/$CATEGORY/$NAME/Portfile macports-ports/$CATEGORY/$NAME/Portfile
-cat ports/$CATEGORY/$NAME/Portfile
-cat macports-ports/$CATEGORY/$NAME/Portfile
 
-cd macports-ports && git remote update && git status
+# Copy changes back to main repo
+cp ports/$CATEGORY/$NAME/Portfile $CLONE/$CATEGORY/$NAME/Portfile
+cat $CLONE/$CATEGORY/$NAME/Portfile
+
 
 # (\d+\.)(\d+\.)(.*)
 
