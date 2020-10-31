@@ -20,4 +20,3 @@ jobs:
           token: ${{secrets.TOKEN}}
           name: glide
           tag: v0.13.3
-          repo: harens/macports-ports

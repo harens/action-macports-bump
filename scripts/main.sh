@@ -4,6 +4,14 @@ echo -e "\033[1;94m🔧 Setting up MacPorts"
 curl -LO https://raw.githubusercontent.com/GiovanniBussi/macports-ci/master/macports-ci
 source ./macports-ci install
 
+echo -e "\033[1;94m⬇️ Installing GitHub CLI"
+sudo port install gh
+
+echo -e "\033[1;94m😀 Authenticating GitHub CLI"
+echo $TOKEN >> token.txt
+gh auth login --with-token < token.txt
+gh auth status
+
 echo -e "\033[1;94m🔍 Determining current outdated version"
 CURRENT=$(port info --version $NAME | sed 's/[A-Za-z: ]*//g')  # Remove letters, colon and space
 echo "Current version number is $CURRENT!"
@@ -36,17 +44,15 @@ echo -e "\033[1;94m⏫ Bumping Version"
 sed -i '' "1,/$CURRENT/ s/$CURRENT/$TAG/" ports/$CATEGORY/$NAME/Portfile
 sudo port bump $NAME
 
-echo -e "\033[1;94m⬇️ Installing GitHub CLI"
-sudo port install gh
+echo -e "\033[1;94m📨 Sending PR"
 
-echo -e "\033[1;94m😀 Authenticating GitHub CLI"
-echo $TOKEN >> token.txt
-gh auth login --with-token < token.txt
-gh auth status
-
+cd $CLONE
+git checkout -b $NAME
 # Copy changes back to main repo
-cp ports/$CATEGORY/$NAME/Portfile $CLONE/$CATEGORY/$NAME/Portfile
-cat $CLONE/$CATEGORY/$NAME/Portfile
+cp ../ports/$CATEGORY/$NAME/Portfile $CATEGORY/$NAME/Portfile
+git add $CATEGORY/$NAME/Portfile
+git commit -m "$NAME: update to $TAG"
+gh pr create --title "$NAME: update to $TAG" --body "Created with [`action-macports-bump`](https://github.com/harens/action-macports-bump)" --base=master --head=$NAME
 
 
 # (\d+\.)(\d+\.)(.*)
