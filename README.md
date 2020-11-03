@@ -41,11 +41,11 @@ jobs:
 
 ### Why this is required
 
-The action runs `gh auth login --with-token` in order to create the PR through the user's account.
+The action runs `gh auth login --with-token` in order to create the PR through the user's account. As well as this, the token is used to determine the [commit email address](https://docs.github.com/en/free-pro-team@latest/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address).
 
 ### How to Generate
 
-Click [here](https://github.com/settings/tokens/new?scopes=read:org,repo,user:email) to generate a Personal Access token with the minimum required scopes for *GitHub cli* to function (`repo` and `read:org`). See the [`gh auth login` docs](https://cli.github.com/manual/gh_auth_login) for more info about the scopes.
+Click [here](https://github.com/settings/tokens/new?scopes=read:org,repo,user:email) to generate a Personal Access token with the minimum required scopes (`repo` and `read:org` for *GitHub CLI* and `user:email` for the commit email address). See the [`gh auth login` docs](https://cli.github.com/manual/gh_auth_login) for more info about the scopes.
 
 After generating the token, in the project repo page, go to `Settings ➤ Secrets ➤ New secret`. Paste the value in and give it a name (e.g. TOKEN). Add this token to the workflow file, such as above `${{secrets.TOKEN}}`, where `TOKEN` is the name of the token generated.
 
@@ -71,9 +71,16 @@ As well as this, feel free to open an issue with any new suggestions or bug repo
 
 * Add __support for generating binary packages__ that do not require MacPorts on the target system via `sudo port mpkg/mdmg`. Although this is feasible and [well documented](https://guide.macports.org/chunked/using.binaries.html), the issue with this is that it might be hard to generalise this process for many ports and it would make the action much slower.
 * Include an __updating dependencies__ feature that could be useful for Go and Cargo packages in particular. This could make use of tools such as [go2port](https://github.com/amake/go2port).
+* Add an option to manually set the commit email address so as to __reduce the number of scopes__ required.
 
 ## Acknowledgements
 
 This project was inspired by [dawidd6/action-homebrew-bump-formula](https://github.com/dawidd6/action-homebrew-bump-formula), a similar GitHub Action for Homebrew.
 
 [GiovanniBussi/macports-ci](https://github.com/GiovanniBussi/macports-ci) also made setting up MacPorts on the fly much simpler. It worked flawlessly and had many advanced flags that were very useful.
+
+## Notice of Non-Affiliation and Disclaimer
+
+This project is not affiliated, associated, authorized, endorsed by, or in any way officially connected with the MacPorts Project, or any of its subsidiaries or its affiliates. The official MacPorts Project website can be found at <https://www.macports.org>.
+
+The name MacPorts as well as related names, marks, emblems and images are registered trademarks of their respective owners.
