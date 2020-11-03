@@ -45,7 +45,7 @@ The action runs `gh auth login --with-token` in order to create the PR through t
 
 ### How to Generate
 
-Click [here](https://github.com/settings/tokens/new?scopes=read:org,repo) to generate a Personal Access token with the minimum required scopes for *GitHub cli* to function (`repo` and `read:org`). See the [`gh auth login` docs](https://cli.github.com/manual/gh_auth_login) for more info about the scopes.
+Click [here](https://github.com/settings/tokens/new?scopes=read:org,repo,user:email) to generate a Personal Access token with the minimum required scopes for *GitHub cli* to function (`repo` and `read:org`). See the [`gh auth login` docs](https://cli.github.com/manual/gh_auth_login) for more info about the scopes.
 
 After generating the token, in the project repo page, go to `Settings ➤ Secrets ➤ New secret`. Paste the value in and give it a name (e.g. TOKEN). Add this token to the workflow file, such as above `${{secrets.TOKEN}}`, where `TOKEN` is the name of the token generated.
 

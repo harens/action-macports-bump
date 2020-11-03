@@ -24,6 +24,11 @@ inputs:
       Portfile repo to modify
     required: false
     default: macports/macports-ports
+  user:
+    description: |
+      Name of user initialising the action
+    required: false
+    default: ${{github.actor}}
 runs:
   using: composite
   steps:
@@ -34,3 +39,4 @@ runs:
         TOKEN: ${{inputs.TOKEN}}
         NAME: ${{inputs.name}}
         REPO: ${{inputs.repo}}
+        USER: ${{inputs.user}}

@@ -29,7 +29,7 @@ CATEGORY=$(echo "$CATEGORY" | tr "," "\n")  # Replace commas with line breaks
 echo "Category is $CATEGORY!"
 
 echo -e "\033[1;94m⬇️ Cloning MacPorts Repo"
-git clone https://github.com/$REPO
+gh repo fork $REPO --clone=true --remote=true
 # Name of the cloned folder
 CLONE=$(echo $REPO | awk -F'/' '{print $2}')
 
@@ -46,18 +46,20 @@ sudo port bump $NAME
 
 echo -e "\033[1;94m📨 Sending PR"
 
+# Finds public emails and takes the first one
+EMAIL=$(gh api /user/public_emails | jq --raw-output '.[0] | .email')
+
+# Git credentials
+# echo "https://$USER:$TOKEN@github.com" > ~/.git-credentials
+git config user.email $EMAIL
+git config user.name $USER
+git config user.password $TOKEN
+
 cd $CLONE
 git checkout -b $NAME
 # Copy changes back to main repo
 cp ../ports/$CATEGORY/$NAME/Portfile $CATEGORY/$NAME/Portfile
 git add $CATEGORY/$NAME/Portfile
 git commit -m "$NAME: update to $TAG"
+# git push --set-upstream origin $NAME
 gh pr create --title "$NAME: update to $TAG" --body "Created with [`action-macports-bump`](https://github.com/harens/action-macports-bump)" --base=master --head=$NAME
-
-
-# (\d+\.)(\d+\.)(.*)
-
-# echo "Checkout branch"
-# git checkout -b $NAME
-
-# sed -i '' '1,/2.3.0/ s/2.3.0/2.18.1/' Portfile
