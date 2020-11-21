@@ -1,5 +1,8 @@
 # MacPorts Bump Action
 
+![Bump Test](https://github.com/harens/action-macports-bump/workflows/Bump%20Test/badge.svg)
+![ShellCheck](https://github.com/harens/action-macports-bump/workflows/ShellCheck/badge.svg)
+
 <img src="https://avatars2.githubusercontent.com/u/4225322?s=280&v=4" align="right"
      alt="MacPorts Logo" width="150">
 
@@ -41,11 +44,11 @@ jobs:
 
 ### Why this is required
 
-The action runs `gh auth login --with-token` in order to create the PR through the user's account. As well as this, the token is used to determine the [commit email address](https://docs.github.com/en/free-pro-team@latest/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address).
+The action runs `gh auth login --with-token` in order to create the PR through the user's account.
 
 ### How to Generate
 
-Click [here](https://github.com/settings/tokens/new?scopes=read:org,repo,user:email) to generate a Personal Access token with the minimum required scopes (`repo` and `read:org` for *GitHub CLI* and `user:email` for the commit email address). See the [`gh auth login` docs](https://cli.github.com/manual/gh_auth_login) for more info about the scopes.
+Click [here](https://github.com/settings/tokens/new?scopes=read:org,repo) to generate a Personal Access token with the minimum required scopes for *GitHub cli* to function (`repo` and `read:org`). See the [`gh auth login` docs](https://cli.github.com/manual/gh_auth_login) for more info about the scopes.
 
 After generating the token, in the project repo page, go to `Settings ➤ Secrets ➤ New secret`. Paste the value in and give it a name (e.g. TOKEN). Add this token to the workflow file, such as above `${{secrets.TOKEN}}`, where `TOKEN` is the name of the token generated.
 
