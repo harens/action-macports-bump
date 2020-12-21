@@ -58,7 +58,7 @@ git checkout -b bump-"$NAME"
 cp ../ports/"$CATEGORY"/"$NAME"/Portfile "$CATEGORY"/"$NAME"/Portfile
 git add "$CATEGORY"/"$NAME"/Portfile
 git commit -m "$NAME: update to $TAG"
-# git push --set-upstream origin bump-"$NAME"
+git push --set-upstream origin bump-"$NAME"
 gh pr create --title "$NAME: update to $TAG" --body "Created with [action-macports-bump](https://github.com/harens/action-macports-bump)" --head=bump-"$NAME"
 
 echo -e "\033[1;94m🎉 PR Sent!"
