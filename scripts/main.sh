@@ -33,10 +33,12 @@ CATEGORY=$(echo "$CATEGORY" | cut -d' ' -f2 | tr "," "\n")
 echo "Category is $CATEGORY!"
 
 echo -e "\033[1;94m⬇️ Cloning MacPorts Repo"
-gh repo fork "$REPO" --clone=true --remote=true
+# Can't authenticate by cloning through gh repo
+gh repo fork "$REPO" --clone=false --remote=true
 # Name of the cloned folder
 CLONE=$(echo "$REPO" | awk -F'/' '{print $2}')
 git clone https://"$USER":"$TOKEN"@github.com/"$USER"/"$CLONE"
+# git clone https://"$USER":"$TOKEN"@github.com/"$REPO"
 
 echo -e "\033[1;94m📁 Creating local Portfile Repo"
 mkdir -p ports/"$CATEGORY"/"$NAME"
@@ -53,12 +55,14 @@ sudo port bump "$NAME"
 echo -e "\033[1;94m📨 Sending PR"
 
 cd "$CLONE" || exit 1
-git checkout -b bump-"$NAME"
+git checkout -b "bump-$NAME-$TAG"
 # Copy changes back to main repo
 cp ../ports/"$CATEGORY"/"$NAME"/Portfile "$CATEGORY"/"$NAME"/Portfile
 git add "$CATEGORY"/"$NAME"/Portfile
 git commit -m "$NAME: update to $TAG"
-git push --set-upstream origin bump-"$NAME"
-gh pr create --title "$NAME: update to $TAG" --body "Created with [action-macports-bump](https://github.com/harens/action-macports-bump)" --head=bump-"$NAME"
-
+git remote add upstream "https://github.com/$REPO"
+git config "remote.upstream.gh-resolved" "base"
+git push --set-upstream origin "bump-$NAME-$TAG"
+# git remote set-url origin "https://github.com/$REPO"  # Create PR to upstream
+gh pr create --title "$NAME: update to $TAG" --body "Created with [action-macports-bump](https://github.com/harens/action-macports-bump)" --head="bump-$NAME-$TAG"
 echo -e "\033[1;94m🎉 PR Sent!"
