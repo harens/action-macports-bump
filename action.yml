@@ -13,30 +13,17 @@ inputs:
       Name of the port
       Example: py-questionary
     required: true
-  tag:
-    description: |
-      Git tag or version number
-      Example: v2.3.4
-    required: false
-    default: ${{github.ref}}
-  repo:
-    description: |
-      Portfile repo to modify
-    required: false
-    default: macports/macports-ports
   user:
-    description: |
-      Name of user initialising the action
-    required: false
-    default: ${{github.actor}}
+     description: |
+       Name of user initialising the action
+     required: false
+     default: ${{github.actor}}
 runs:
   using: composite
   steps:
     - run: . scripts/main.sh
       shell: bash
       env:
-        TAG: ${{inputs.tag}}
         TOKEN: ${{inputs.TOKEN}}
         NAME: ${{inputs.name}}
-        REPO: ${{inputs.repo}}
-        USER: ${{inputs.user}}
+        GITHUB_USER: ${{inputs.user}}
